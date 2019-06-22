@@ -1,0 +1,87 @@
+.tasks-sec {
+    display: flex;
+    flex-direction: column;
+
+    .todo-list {
+        margin: 0;
+
+        .todo-item {
+            height: 3rem;
+            line-height: 3rem;
+            display: flex;
+            align-items: center;
+            //border-bottom: .4px solid $item-border-color;
+
+            .toggle-status {
+                position: relative;
+                appearance: none;
+                -webkit-appearance: none;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 50%;
+                margin: 0 .5rem;
+                background-image: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    left: 5%;
+                    right: 5%;
+                    top: 5%;
+                    bottom: 5%;
+                    background: white;
+                    border-radius: 50%;
+                }
+
+                &:checked {
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        left: 15%;
+                        right: 15%;
+                        top: 15%;
+                        bottom: 15%;
+                        background: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
+                        border-radius: 50%;
+                    }
+                }
+            }
+
+            .todo-info {
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .todo-actions {
+                display: flex;
+
+                button {
+                    width: 3rem;
+                    height: 3rem;
+                    padding: .5rem;
+                }
+
+                .edit-button {
+                    background: #eaeaea;
+                    color: white;
+                }
+
+                .del-button {
+                    background: #db3a29;
+                    color: white;
+                }
+
+                &[hidden] {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .background-lines {
+        margin: 0 1rem;
+        flex: 1;
+        background: repeating-linear-gradient(to bottom, transparent, transparent 2.9rem, $item-border-color 3rem);
+    }
+}

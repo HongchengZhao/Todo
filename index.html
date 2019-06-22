@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i%7CSpectral:400&amp;subset=latin-ext"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="./styles/style.css">
+    <title>Todo App</title>
+</head>
+
+<body>
+    <header class="header">
+        <h2>To-Do</h2>
+    </header>
+    <main class="main">
+        <nav class="aside-nav" id="nav">
+            <button class="nav-item nav-active" id="route-tasks"><i class="material-icons">list</i></button>
+            <button class="nav-item" id="route-calendar"><i class="material-icons">calendar_today</i></button>
+        </nav>
+        <div class="container">
+            <section class="tasks-sec current-sec" id="tasks">
+                <div class="toolbar">
+                    <div class="toolbar-title">Task</div>
+                    <div class="visibility-filter">
+                        <label for="filter-options"><i class="material-icons">filter_list</i></label>
+                        <input type="checkbox" name="filter-options" id="filter-options">
+                        <div class="popover">
+                            <h4 class="popover-header">Visibility Filter</h4>
+                            <ul class="filters popover-menu" id="filters">
+                                <li class="filter popover-menu-item selected">
+                                    <input type="radio" name="filter" id="filter-all" value="ALL">
+                                    <label for="filter-all">All</label>
+                                </li>
+                                <li class="filter popover-menu-item">
+                                    <input type="radio" name="filter" id="filter-active" value="ACTIVE">
+                                    <label for="filter-active">Active</label>
+                                </li>
+                                <li class="filter popover-menu-item">
+                                    <input type="radio" name="filter" id="filter-completed" value="COMPLETED">
+                                    <label for="filter-completed">Completed</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="background-lines">
+                    <div class="new-task">
+                        <label for="new-todo"><i class="material-icons">add</i></label>
+                        <input type="text" name="new-todo" id="new-todo" class="todo-input" placeholder="New Task" />
+                    </div>
+                    <ul class="todo-list" id="todo-list"></ul>
+                </div>
+            </section>
+            <section class="editor-sec" id="details">
+                <div class="details-body">
+                    <div class="details-section">
+                        <div class="details-item">
+                            <div class="item-icon"><i class="material-icons">view_headline</i></div>
+                            <div class="item-content">
+                                <input type="text" name="todo-title" id="edit-todo-title" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details-section">
+                        <div class="details-item">
+                            <div class="item-icon"><i class="material-icons">calendar_today</i></div>
+                            <div class="item-content">
+                                <label for="due-date-control">Due Date</label>
+                                <input type="checkbox" name="due-date-control" id="due-date-control">
+                                <div class="popover due-date-popover">
+                                    <h4 class="popover-header">Select Date</h4>
+                                    <div class="popover-menu">
+                                        <div class="calendar" id="due-date-picker"></div>
+                                    </div>
+                                    <div class="popover-footer">
+                                        <div class="btn-group">
+                                            <button class="cancel due-date-cancel">Cancel</button>
+                                            <button class="save due-date-save">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-item">
+                            <div class="item-icon"><i class="material-icons">alarm</i></div>
+                            <div class="item-content">
+                                <label for="alarm-control">Remind Me</label>
+                                <input type="checkbox" name="alarm-control" id="alarm-control">
+                                <div class="popover reminder-popover">
+                                    <h4 class="popover-header">Select Date</h4>
+                                    <div class="popover-menu">
+                                        <div class="calendar" id="alarm-picker"></div>
+                                        <div class="time-picker" id="time-picker"><span>Time</span></div>
+                                    </div>
+                                    <div class="popover-footer">
+                                        <div class="btn-group">
+                                            <button class="cancel reminder-cancel">Cancel</button>
+                                            <button class="save reminder-save">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details-section">
+                        <div class="details-item">
+                            <textarea name="todo-details" id="todo-details" rows="10"
+                                placeholder="Details..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="details-footer">
+                    <button class="close-editor"><i class="material-icons">arrow_forward_ios</i></button>
+                </div>
+            </section>
+            <section class="calendar-sec" id="schedule">
+                <div class="calendar" id="calendar"></div>
+                <div class="background-lines">
+                    <ul class="todo-list todolist-by-day" id="todolist-by-day"></ul>
+                </div>
+            </section>
+        </div>
+
+        </section>
+    </main>
+    <script src="./dist/bundle.js"></script>
+</body>
+
+</html>

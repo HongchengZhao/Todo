@@ -1,0 +1,518 @@
+$item-border-color: #e5e5e5;
+$primary: #e3745d;
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    color: #161b3d;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+}
+
+ol,
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+button {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    outline: none;
+    border: none
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    padding: 0 2rem;
+    background-image: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
+
+    h2 {
+        display: inline-block;
+        font-family: 'Spectral', Helvetica, Arial, sans-serif;
+        margin: 0;
+        color: white;
+    }
+}
+
+.main {
+    height: calc(100vh - 3rem);
+    display: flex;
+
+    .aside-nav {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 3rem;
+        background: linear-gradient(to bottom, #ececec, #fff);
+
+
+        .nav-item {
+            width: 3rem;
+            height: 3rem;
+            color: #767678;
+        }
+
+        .nav-active {
+            color: #e3745d;
+        }
+    }
+
+    .container {
+        width: calc(100vw - 3rem);
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+
+        &>section {
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .current-sec {
+            order: -1;
+        }
+    }
+}
+
+.toolbar {
+    overflow: auto;
+    padding: 1rem;
+    color: $primary;
+
+    .toolbar-title {
+        display: inline-block;
+        font-size: 1.5rem;
+    }
+
+    .visibility-filter {
+        float: right;
+        color: #161b3d;
+
+        &>label {
+            color: #767678;
+        }
+    }
+}
+
+
+
+#filter-options {
+    display: none;
+
+    &:checked+.popover {
+        display: block;
+    }
+}
+
+.popover {
+    display: none;
+    background: white;
+    position: absolute;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    padding: 6px 0;
+    border-radius: 2px;
+    margin: 0;
+    z-index: 100;
+    right: .5rem;
+
+    .popover-header {
+        padding: .5rem 1rem;
+        margin: 0;
+        border-bottom: 1px solid #eaeaea;
+        text-align: center;
+    }
+
+    .popover-menu {
+        margin: 0;
+        padding: .5rem;
+
+        .popover-menu-item {
+            display: flex;
+            align-items: center;
+            height: 2rem;
+            padding: 0 1rem;
+        }
+    }
+
+    .popover-footer {
+        border-top: 1px solid #eaeaea;
+    }
+}
+
+.filters {
+    .filter {
+        input[type=radio] {
+            display: none;
+        }
+
+        label {
+            width: 100%;
+            height: 100%;
+            line-height: 2rem;
+        }
+
+        &.selected {
+            background: #fcf1e5;
+            color: $primary;
+        }
+    }
+}
+
+.new-task {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+
+    label {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: 0 0.5rem;
+        color: #e3745d;
+    }
+
+    .todo-input {
+        font-size: 1rem;
+        color: #161b3d;
+        border: none;
+        appearance: none;
+        -webkit-appearance: none;
+        outline: none;
+
+        &::placeholder {
+            color: #ccc;
+        }
+    }
+}
+
+.tasks-sec {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.todo-list {
+    margin: 0;
+    .todo-item {
+        height: 3rem;
+        line-height: 3rem;
+        display: flex;
+        align-items: center;
+        //border-bottom: .4px solid $item-border-color;
+    
+        .toggle-status {
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            margin: 0 .5rem;
+            border: none;
+            outline: none;
+            background-image: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
+    
+            &::before {
+                content: '';
+                position: absolute;
+                left: 5%;
+                right: 5%;
+                top: 5%;
+                bottom: 5%;
+                background: white;
+                border-radius: 50%;
+            }
+    
+            &:checked {
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 15%;
+                    right: 15%;
+                    top: 15%;
+                    bottom: 15%;
+                    background: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
+                    border-radius: 50%;
+                }
+            }
+        }
+    
+        .todo-info {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+        .todo-actions {
+            display: flex;
+            width: 6rem;
+            overflow: hidden;
+            transition: width 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+            button {
+                width: 3rem;
+                height: 3rem;
+                padding: .5rem;
+            }
+    
+            .edit-button {
+                background: #eaeaea;
+                color: white !important;
+            }
+    
+            .del-button {
+                background: #e3745d;
+                color: white !important;
+            }
+    
+            &[hidden] {
+                // display: none;
+                display: block;
+                width: 0;
+            }
+        }
+    }
+    
+}
+
+
+.todo-completed {
+    .todo-info {
+        text-decoration: line-through;
+        color: #666
+    }
+}
+
+.background-lines {
+    margin: 0 1rem;
+    flex: 1;
+    background: repeating-linear-gradient(to bottom, transparent, transparent 2.9rem, $item-border-color 3rem);
+}
+
+.editor-sec {
+    position: absolute;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background: white;
+    transition: width 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    background: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.show {
+        width: 100%;
+    }
+
+    .details-body {
+        flex: 1;
+        margin: 1rem;
+
+        input[type=checkbox] {
+            display: none;
+
+            &:checked+.popover {
+                display: block;
+                left: 0;
+                width: 100%;
+
+                .calendar-head {
+                    font-size: .8rem;
+                }
+
+                .cell-day {
+                    height: 1.2rem;
+                    margin: .1rem auto;
+                    width: auto;
+                    border-radius: 0;
+                    line-height: 1rem;
+                    font-size: .8rem;
+                }
+
+                .btn-group {
+                    text-align: right;
+                    font-size: 1rem;
+                    height: 2rem;
+                    margin: .5rem;
+
+                    button {
+                        height: 100%;
+                        width: 3rem;
+                    }
+
+                    .cancel {
+                        background: #ededed;
+                        color: #333;
+                    }
+
+                    .save {
+                        background: $primary;
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        [for=alarm-control] {
+            display: flex;
+            flex-direction: column;
+
+            span:last-child {
+                font-size: .7rem;
+            }
+        }
+    }
+
+    .details-footer {
+        background: #f4f4f4;
+        border-top: 1px solid #eaeaea;
+        color: #767678;
+        padding: .25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .close-editor {
+            font-size: .8rem;
+            color: #767678;
+        }
+
+        .save {
+            margin: 0 1rem;
+        }
+    }
+
+    input {
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+    }
+
+    textarea {
+        font-size: 1rem;
+        width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+        outline: none;
+    }
+
+    .details-section {
+        background: white;
+        border: 1px solid #eaeaea;
+        border-radius: 2px;
+        margin: 1rem 0;
+
+        .details-item {
+            padding: .5rem 1rem;
+            display: flex;
+            align-items: center;
+            color: #767678;
+
+            .item-content {
+                margin-left: 1rem;
+                flex: 1;
+                position: relative;
+                // overflow: hidden;
+            }
+        }
+    }
+}
+
+#due-date-picker {
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border: none;
+    //font-size: 1.4rem;
+    width: 100%;
+    position: relative;
+}
+
+.calendar-sec {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .calendar {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $primary;
+    }
+
+    .todolist-by-day {
+        flex: 1;
+    }
+}
+
+.calendar {
+    padding: 0 .5rem;
+
+    .calendar-indicator {
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+
+        .current-month {
+            text-align: center;
+            flex: 1;
+        }
+    }
+
+    .calendar-head {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        padding: .5rem 0;
+
+        .weekday {
+            text-align: center;
+        }
+    }
+
+    .calendar-body {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+
+        .cell-day {
+            height: 2rem;
+            width: 2rem;
+            line-height: 2rem;
+            margin: 0 auto;
+
+            &.selected {
+                background: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
+                border-radius: 50%;
+                color: white;
+            }
+        }
+    }
+}
+
+.time-picker {
+    margin: .5rem;
+
+    span {
+        margin-right: 1rem;
+    }
+
+    select {
+        width: 2.5rem;
+    }
+
+    select,
+    option {
+        font-size: 1rem;
+        color: #767678;
+        text-align: center;
+    }
+}
