@@ -56,6 +56,8 @@ class TodoEditor {
             if (todo.dueDate) {
                 const duedate = new Date(todo.dueDate.toString());
                 dueDate.innerText = `Due on ${duedate.toDateString()}`;
+            } else {
+                dueDate.innerText = 'Due Date';
             }
 
             const reminderTime = this.el.querySelector('label[for=alarm-control]') as HTMLElement;
@@ -63,6 +65,8 @@ class TodoEditor {
                 const reminder = new Date(todo.reminderTime.toString());
                 reminderTime.innerHTML =
                     `<span>Remind me at ${reminder.toLocaleTimeString()}</span><span>On ${reminder.toDateString()}</span>`;
+            } else {
+                reminderTime.innerHTML = 'Remind Me';
             }
 
             const detail = document.getElementById('todo-details') as HTMLTextAreaElement;
