@@ -16,6 +16,11 @@
 <body>
     <header class="header">
         <h2>To-Do</h2>
+        <div class="search">
+            <label for="show-search"><i class="material-icons">search</i></label>
+            <input type="checkbox" id="show-search">
+            <input type="search" id="search-todo">
+        </div>
     </header>
     <main class="main">
         <nav class="aside-nav" id="nav">
@@ -26,6 +31,24 @@
             <section class="tasks-sec current-sec" id="tasks">
                 <div class="toolbar">
                     <div class="toolbar-title">Task</div>
+                    <div class="oprations">
+                        <label for="operations-control"><i class="material-icons">more_horiz</i></label>
+                        <input type="checkbox" name="operations-control" id="operations-control">
+                        <div class="popover">
+                            <h4 class="popover-header">List Operations</h4>
+                            <ul class="popover-menu">
+                                <li class="popover-menu-item">
+                                    <button id="complete-all">Complete All</button>
+                                </li>
+                                <li class="popover-menu-item">
+                                    <button id="uncomplete-all">Uncomplete All</button>
+                                </li>
+                                <li class="popover-menu-item">
+                                    <button id="remove-all-completed">Remove All Completed</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="visibility-filter">
                         <label for="filter-options"><i class="material-icons">filter_list</i></label>
                         <input type="checkbox" name="filter-options" id="filter-options">
@@ -52,11 +75,15 @@
                     <div class="new-task">
                         <label for="new-todo"><i class="material-icons">add</i></label>
                         <input type="text" name="new-todo" id="new-todo" class="todo-input" placeholder="New Task" />
+                        <span class="add-todo-item">Add</span>
                     </div>
                     <ul class="todo-list" id="todo-list"></ul>
                 </div>
             </section>
             <section class="editor-sec" id="details">
+                <div class="details-footer">
+                    <button class="close-editor"><i class="material-icons">arrow_forward_ios</i></button>
+                </div>
                 <div class="details-body">
                     <div class="details-section">
                         <div class="details-item">
@@ -114,14 +141,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="details-footer">
-                    <button class="close-editor"><i class="material-icons">arrow_forward_ios</i></button>
-                </div>
             </section>
             <section class="calendar-sec" id="schedule">
+                <div class="toolbar">
+                    <div class="toolbar-title">Calendar</div>
+                </div>
                 <div class="calendar" id="calendar"></div>
                 <div class="background-lines">
                     <ul class="todo-list todolist-by-day" id="todolist-by-day"></ul>
+                </div>
+            </section>
+            <section class="search-sec">
+                <div class="toolbar">
+                    <div class="toolbar-title searching">Searching "<span>hhhhhhhhhhhhhhhhhhhhhhhhhhhh</span>"</div>
+                </div>
+                <div class="background-lines">
+                    <ul class="todo-list result-list" id="result-list"></ul>
                 </div>
             </section>
         </div>

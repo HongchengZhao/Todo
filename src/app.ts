@@ -2,29 +2,70 @@ import { Todo, Status } from './model';
 import TodoEditor from './todo-editor';
 import Calendar from './calendar';
 import TodoList from './todo-list';
+import SearchResult from './search-result';
 import CalendarTodoList from './calendar-todo-list';
 
 class App {
-    todoList: TodoList;
+    list: Todo[];
     editor: TodoEditor;
+    todoList: TodoList;
     calendarTodoList: CalendarTodoList;
+    searchResult: TodoList;
     curTodoId = '';
+    filter: string = 'ALL';
 
     constructor() {
         // Load data from local storage
         const res = localStorage.getItem('todolist');
-        const list = res ? JSON.parse(res) : [];
-        this.editor = new TodoEditor(list);
-        this.todoList = new TodoList(list, this.editor, document.getElementById('todo-list') as HTMLUListElement);
+        this.list = res ? JSON.parse(res) : [];
+        this.editor = new TodoEditor(this.list);
+        this.todoList = new TodoList(
+            this.list,
+            this.editor,
+            document.getElementById('todo-list') as HTMLUListElement,
+            document.getElementById('new-todo') as HTMLInputElement
+        );
 
         const calendar = new Calendar(document.getElementById('calendar') as HTMLElement);
-        this.calendarTodoList = new CalendarTodoList(list, this.editor, calendar, document.getElementById('todolist-by-day') as HTMLElement);
+        this.calendarTodoList = new CalendarTodoList(
+            this.list,
+            this.editor,
+            calendar,
+            document.getElementById('todolist-by-day') as HTMLElement
+        );
+
+        this.searchResult = new SearchResult(
+            this.list,
+            this.editor,
+            document.getElementById('result-list') as HTMLElement,
+            document.getElementById('search-todo') as HTMLInputElement
+        );
 
         this.init();
     }
 
     init() {
         this.configRoutes();
+
+        (document.getElementById('complete-all') as HTMLElement).addEventListener('click', () => {
+            this.list.forEach(todo => todo.status = Status.COMPLETED);
+            this.todoList.render(this.filter);
+        });
+
+        (document.getElementById('uncomplete-all') as HTMLElement).addEventListener('click', () => {
+            this.list.forEach(todo => todo.status = Status.ACTIVE);
+            this.todoList.render(this.filter);
+        });
+
+        (document.getElementById('remove-all-completed') as HTMLElement).addEventListener('click', () => {
+            const atciveItems = this.list.reduce((prev: any, todo) => {
+                if (todo.status === Status.ACTIVE) prev.push(todo);
+                return prev;
+            }, []);
+            this.list.splice(0, this.list.length);
+            this.list.push(...atciveItems);
+            this.todoList.render(this.filter);
+        });
 
         const filters = document.getElementById('filters') as HTMLElement;
         filters.addEventListener('change', (ev) => {
@@ -36,14 +77,19 @@ class App {
 
             if (target.name === 'filter') {
                 (document.getElementById('filter-options') as HTMLInputElement).checked = false;
-                this.todoList.render(target.value);
+                this.filter = target.value;
+                this.todoList.render(this.filter);
             }
         });
-        
+
         window.addEventListener('click', (ev) => {
             const target = ev.target as HTMLInputElement;
             if (target.id !== 'filter-options') {
                 (document.getElementById('filter-options') as HTMLInputElement).checked = false;
+            }
+
+            if (target.id !== 'operations-control') {
+                (document.getElementById('operations-control') as HTMLInputElement).checked = false;
             }
         });
     }

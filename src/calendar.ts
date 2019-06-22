@@ -119,7 +119,6 @@ class Calendar {
                 this.selected.month = this.month;
                 this.selected.year = this.year;
             }
-            console.log(this.selected);
         });
     }
 

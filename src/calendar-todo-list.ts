@@ -19,6 +19,7 @@ class CalenderTodoList extends TodoList {
     render() {
         if (!this.calendar) return;
 
+        this.checkDueDate();
         Utils.removeAllChildren(this.el);
 
         const listOfDay = this.list.filter((todo) => {

@@ -26,8 +26,9 @@ button {
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 3rem;
-  padding: 0 2rem;
+  padding: 0 1rem;
   background-image: linear-gradient(58deg, #e3745d 0%, #f4a16b 47%, #ffbf74 100%);
 }
 .header h2 {
@@ -35,6 +36,34 @@ button {
   font-family: "Spectral", Helvetica, Arial, sans-serif;
   margin: 0;
   color: white;
+}
+.header .search {
+  display: flex;
+  align-items: center;
+}
+.header .search label[for=show-search] {
+  color: white;
+}
+.header .search #show-search {
+  display: none;
+}
+.header .search #show-search:checked + #search-todo {
+  width: 8rem;
+  height: 1.5rem;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  outline: none;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  margin-left: 0.3rem;
+}
+.header .search #search-todo {
+  width: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  transition: all 200ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .main {
@@ -72,13 +101,34 @@ button {
 }
 
 .toolbar {
-  overflow: auto;
   padding: 1rem;
+  height: 4rem;
+  box-sizing: border-box;
   color: #e3745d;
 }
 .toolbar .toolbar-title {
   display: inline-block;
   font-size: 1.5rem;
+}
+.toolbar .oprations {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 0 0.5rem;
+  vertical-align: baseline;
+  overflow: visible;
+  color: #161b3d;
+}
+.toolbar .oprations label {
+  color: #767678;
+}
+.toolbar .oprations [type=checkbox] {
+  display: none;
+}
+.toolbar .oprations .popover {
+  left: 0;
+}
+.toolbar .oprations .popover button {
+  font-size: 0.8rem;
 }
 .toolbar .visibility-filter {
   float: right;
@@ -91,7 +141,8 @@ button {
 #filter-options {
   display: none;
 }
-#filter-options:checked + .popover {
+
+[type=checkbox]:checked + .popover {
   display: block;
 }
 
@@ -105,6 +156,7 @@ button {
   margin: 0;
   z-index: 100;
   right: 0.5rem;
+  width: fit-content;
 }
 .popover .popover-header {
   padding: 0.5rem 1rem;
@@ -120,7 +172,8 @@ button {
   display: flex;
   align-items: center;
   height: 2rem;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
+  white-space: nowrap;
 }
 .popover .popover-footer {
   border-top: 1px solid #eaeaea;
@@ -157,9 +210,13 @@ button {
   appearance: none;
   -webkit-appearance: none;
   outline: none;
+  flex: 1;
 }
 .new-task .todo-input::placeholder {
   color: #ccc;
+}
+.new-task .todo-input + .add-todo-item {
+  color: #f4a16b;
 }
 
 .tasks-sec {
@@ -238,6 +295,15 @@ button {
   width: 0;
 }
 
+#todo-list:empty::before {
+  display: inline-block;
+  content: "No Tasks Right Now";
+  letter-spacing: 0.1rem;
+  margin-left: 1.5rem;
+  color: #767678;
+  line-height: 3rem;
+}
+
 .todo-completed .todo-info {
   text-decoration: line-through;
   color: #666;
@@ -246,7 +312,7 @@ button {
 .background-lines {
   margin: 0 1rem;
   flex: 1;
-  background: repeating-linear-gradient(to bottom, transparent, transparent 2.9rem, #e5e5e5 3rem);
+  background: repeating-linear-gradient(to bottom, transparent, transparent 2.937rem, #e5e5e5 3rem);
 }
 
 .editor-sec {
@@ -260,6 +326,7 @@ button {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  z-index: 100;
 }
 .editor-sec.show {
   width: 100%;
@@ -382,6 +449,17 @@ button {
 .calendar-sec .todolist-by-day {
   flex: 1;
 }
+.calendar-sec .todolist-by-day:empty {
+  text-align: center;
+}
+.calendar-sec .todolist-by-day:empty::before {
+  display: inline-block;
+  margin-top: 6rem;
+  content: "No Task on This Day";
+  color: #767678;
+  letter-spacing: 0.1rem;
+  line-height: 3rem;
+}
 
 .calendar {
   padding: 0 0.5rem;
@@ -426,14 +504,30 @@ button {
 .time-picker span {
   margin-right: 1rem;
 }
-.time-picker select {
-  width: 2.5rem;
-}
 .time-picker select,
 .time-picker option {
   font-size: 1rem;
   color: #767678;
   text-align: center;
+}
+
+.search-sec {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.search-sec .toolbar-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 2rem;
+  width: 75vw;
+}
+.search-sec #result-list:empty::before {
+  content: "No Task Found...";
+  color: #767678;
+  line-height: 3rem;
+  margin-left: 1.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

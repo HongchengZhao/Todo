@@ -18,14 +18,6 @@ class Todo {
         this.detail = '';
         this.status = Status.ACTIVE;
     }
-
-    complete() {
-        this.status = Status.COMPLETED;
-    }
-
-    uncomplete() {
-        this.status = Status.ACTIVE;
-    }
 }
 
 

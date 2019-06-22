@@ -8,17 +8,20 @@ class TodoList {
     editor: TodoEditor;
     curTodoId: string = '';
     swipedLeft: HTMLElement | null = null;
+    newTodo: HTMLInputElement | null = null;
 
-    constructor(todoList: Todo[], editor: TodoEditor, el: HTMLElement) {
+    constructor(todoList: Todo[], editor: TodoEditor, el: HTMLElement, newTodo?: HTMLInputElement) {
         this.list = todoList;
         this.editor = editor;
         this.el = el;
         this.render = this.render.bind(this);
+        if (newTodo) this.newTodo = newTodo;
 
         // bind handlers
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSwipeLeft = this.handleSwipeLeft.bind(this);
+        this.handleNewTodo = this.handleNewTodo.bind(this);
 
         this.init();
     }
@@ -33,23 +36,19 @@ class TodoList {
             this.render();
         });
 
-        const newTodo = document.getElementById('new-todo') as HTMLInputElement;
-        newTodo.addEventListener('keypress', (ev) => {
-            if (ev.key === 'Enter') {
-                const title = newTodo.value.trim();
-                const todo = new Todo(title);
-                this.list.unshift(todo);
+        if (this.newTodo) {
+            this.newTodo.addEventListener('keypress', (ev) => ev.key === 'Enter' && this.handleNewTodo());
+            (this.newTodo.nextElementSibling as HTMLElement).addEventListener('click', this.handleNewTodo);
+        }
 
-                this.el.insertBefore(this.createTodoItem(todo), this.el.firstElementChild);
-            }
-        });
-
-        window.addEventListener('click', () => {
+        window.addEventListener('click', (ev) => {
             if (this.swipedLeft) this.swipedLeft.hidden = true;
         });
     }
 
     render(filter: string = 'ALL') {
+        this.checkDueDate();
+
         const todos = filter === 'ALL' ? this.list : this.list.filter(todo => Status[todo.status] === filter);
         Utils.removeAllChildren(this.el);
 
@@ -128,7 +127,7 @@ class TodoList {
 
     handleSwipeLeft(ev: TouchEvent) {
         for (const el of (ev.composedPath() as HTMLElement[])) {
-            if (el.classList.contains('todo-item')) {
+            if (el.classList && el.classList.contains('todo-item')) {
                 if (this.swipedLeft) this.swipedLeft.hidden = true;
 
                 this.swipedLeft = el.getElementsByClassName('todo-actions')[0] as HTMLElement;
@@ -136,6 +135,30 @@ class TodoList {
                 break;
             }
         }
+    }
+
+    handleNewTodo() {
+        if (this.newTodo) {
+            const title = this.newTodo.value.trim();
+            if (title === '') return;
+            const todo = new Todo(title);
+            this.list.unshift(todo);
+
+            this.el.insertBefore(this.createTodoItem(todo), this.el.firstElementChild);
+        }
+    }
+
+    checkDueDate() {
+        const today = new Date();
+        this.list.forEach(todo => {
+            if (todo.dueDate) {
+                const duedate = new Date(todo.dueDate.toString());
+                const flag = today.getFullYear() >= duedate.getFullYear() &&
+                    today.getMonth() >= duedate.getMonth() &&
+                    today.getDate() > duedate.getDate();
+                todo.status = flag ? Status.COMPLETED : todo.status;
+            }
+        })
     }
 }
 
