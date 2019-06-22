@@ -1,4 +1,4 @@
-import { Todo, Status } from './model';
+import { Todo } from './model';
 import * as Utils from './utils';
 import Calendar from './calendar';
 import TodoEditor from './todo-editor';

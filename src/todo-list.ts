@@ -58,7 +58,8 @@ class TodoList {
     createTodoItem(todo: Todo) {
         const li = document.createElement('li');
         li.classList.add('todo-item', todo.status === Status.ACTIVE ? 'todo-active' : 'todo-completed');
-        li.setAttribute('data-id', todo.id);
+        todo.pinned && li.classList.add('pinned');
+        li.dataset.id = todo.id;
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -73,6 +74,9 @@ class TodoList {
         actions.classList.add('todo-actions');
         actions.hidden = true;
 
+        const pinBtn = document.createElement('button');
+        pinBtn.classList.add('pin-button');
+        pinBtn.innerHTML = `<i class="material-icons">vertical_align_top</i>`;
         const editBtn = document.createElement('button');
         editBtn.classList.add('edit-button');
         editBtn.innerHTML = `<i class="material-icons">edit</i>`;
@@ -81,7 +85,7 @@ class TodoList {
         deleteBtn.classList.add('del-button');
         deleteBtn.innerHTML = `<i class="material-icons">delete_forever</i>`;
 
-        actions.append(editBtn, deleteBtn);
+        actions.append(pinBtn, editBtn, deleteBtn);
 
         li.append(checkbox, todoInfo, actions);
         return li;
@@ -95,7 +99,7 @@ class TodoList {
                  * delete todo item
                  */
                 const li = (el.parentElement as HTMLElement).parentElement as HTMLElement;
-                this.list.splice(this.list.findIndex(todo => todo.id === li.getAttribute('data-id')), 1);
+                this.list.splice(this.list.findIndex(todo => todo.id === li.dataset.id), 1);
                 li.remove();
                 break;
             } else if (el.classList && el.classList.contains('edit-button')) {
@@ -103,9 +107,27 @@ class TodoList {
                  * edit todo item
                  */
                 const li = (el.parentElement as HTMLElement).parentElement as HTMLElement;
-                this.curTodoId = li.getAttribute('data-id') || '';
+                this.curTodoId = li.dataset.id || '';
                 this.editor.open(this.curTodoId);
                 break;
+            } else if (el.classList && el.classList.contains('pin-button')) {
+                /*
+                 * pin todo item
+                 */
+                const li = (el.parentElement as HTMLElement).parentElement as HTMLElement;
+                const deleted = this.list.splice(this.list.findIndex(todo => todo.id === li.dataset.id), 1);
+                deleted[0].pinned = true;
+                this.list.unshift(...deleted);
+
+                const pinned = document.getElementsByClassName('pinned');
+                if (pinned.length) {
+                    pinned[0].classList.remove('pinned');
+                    const pinnedTodo = this.list.find(todo => todo.id === (pinned[0] as HTMLElement).dataset.id);
+                    if (pinnedTodo) pinnedTodo.pinned = false;
+                }
+
+                li.classList.add('pinned');
+                this.el.insertBefore(li, this.el.firstElementChild as Element);
             }
         }
     }
@@ -145,6 +167,7 @@ class TodoList {
             this.list.unshift(todo);
 
             this.el.insertBefore(this.createTodoItem(todo), this.el.firstElementChild);
+            this.newTodo.value = '';
         }
     }
 

@@ -10,6 +10,7 @@ class Todo {
     detail: string;
     reminderTime: Date | null;
     status: Status;
+    pinned: boolean = false;
 
     constructor(title: string, dueDate: Date | null = null, reminderTime: Date | null = null) {
         this.title = title;

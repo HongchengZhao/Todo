@@ -1,6 +1,16 @@
 $item-border-color: #e5e5e5;
 $primary: #e3745d;
 
+@keyframes blink {
+    from {
+        background-color: white;
+    }
+
+    to {
+        background-color: #f6f6f6;
+    }
+}
+
 html,
 body {
     padding: 0;
@@ -139,7 +149,8 @@ button {
             color: #767678;
         }
 
-        [type=checkbox] {
+        input[type=checkbox],
+        #operations-control {
             display: none;
         }
 
@@ -276,6 +287,11 @@ button {
         align-items: center;
         //border-bottom: .4px solid $item-border-color;
 
+        &.pinned {
+            background: #f6f6f6;
+            animation: blink 400ms 3;
+        }
+
         .toggle-status {
             position: relative;
             appearance: none;
@@ -321,14 +337,23 @@ button {
 
         .todo-actions {
             display: flex;
-            width: 6rem;
+            width: 9rem;
             overflow: hidden;
             transition: width 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            &[hidden] {
+                transition: width 0ms ease-out;
+            }
 
             button {
                 width: 3rem;
                 height: 3rem;
                 padding: .5rem;
+            }
+
+            .pin-button {
+                color: white;
+                background: #ffbf74;
             }
 
             .edit-button {
@@ -625,7 +650,7 @@ button {
 
     #result-list {
         &:empty {
-            &::before{
+            &::before {
                 content: 'No Task Found...';
                 color: #767678;
                 line-height: 3rem;

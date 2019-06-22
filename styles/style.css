@@ -1,3 +1,11 @@
+@keyframes blink {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: #f6f6f6;
+  }
+}
 html,
 body {
   padding: 0;
@@ -121,7 +129,8 @@ button {
 .toolbar .oprations label {
   color: #767678;
 }
-.toolbar .oprations [type=checkbox] {
+.toolbar .oprations input[type=checkbox],
+.toolbar .oprations #operations-control {
   display: none;
 }
 .toolbar .oprations .popover {
@@ -234,6 +243,10 @@ button {
   display: flex;
   align-items: center;
 }
+.todo-list .todo-item.pinned {
+  background: #f6f6f6;
+  animation: blink 400ms 3;
+}
 .todo-list .todo-item .toggle-status {
   position: relative;
   appearance: none;
@@ -273,14 +286,21 @@ button {
 }
 .todo-list .todo-item .todo-actions {
   display: flex;
-  width: 6rem;
+  width: 9rem;
   overflow: hidden;
   transition: width 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.todo-list .todo-item .todo-actions[hidden] {
+  transition: width 0ms ease-out;
 }
 .todo-list .todo-item .todo-actions button {
   width: 3rem;
   height: 3rem;
   padding: 0.5rem;
+}
+.todo-list .todo-item .todo-actions .pin-button {
+  color: white;
+  background: #ffbf74;
 }
 .todo-list .todo-item .todo-actions .edit-button {
   background: #eaeaea;
