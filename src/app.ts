@@ -125,8 +125,8 @@ class App {
 
 window.addEventListener('load', () => {
     const app = new App();
-
-    window.addEventListener('beforeunload', () => {
+    
+    window.addEventListener('unload', () => {
         localStorage.setItem('todolist', JSON.stringify(app.todoList.list));
     });
 });
