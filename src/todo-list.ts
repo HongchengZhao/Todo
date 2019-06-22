@@ -7,6 +7,7 @@ class TodoList {
     el: HTMLElement;
     editor: TodoEditor;
     curTodoId: string = '';
+    filter: string = 'ALL';
     swipedLeft: HTMLElement | null = null;
     newTodo: HTMLInputElement | null = null;
 
@@ -47,6 +48,7 @@ class TodoList {
     }
 
     render(filter: string = 'ALL') {
+        this.filter = filter;
         this.checkDueDate();
 
         const todos = filter === 'ALL' ? this.list : this.list.filter(todo => Status[todo.status] === filter);
@@ -119,10 +121,10 @@ class TodoList {
                 deleted[0].pinned = true;
                 this.list.unshift(...deleted);
 
-                const pinned = document.getElementsByClassName('pinned');
-                if (pinned.length) {
-                    pinned[0].classList.remove('pinned');
-                    const pinnedTodo = this.list.find(todo => todo.id === (pinned[0] as HTMLElement).dataset.id);
+                const pinned = document.getElementsByClassName('pinned')[0];
+                if (pinned) {
+                    pinned.classList.remove('pinned');
+                    const pinnedTodo = this.list.find(todo => todo.id === (pinned as HTMLElement).dataset.id);
                     if (pinnedTodo) pinnedTodo.pinned = false;
                 }
 
@@ -164,9 +166,17 @@ class TodoList {
             const title = this.newTodo.value.trim();
             if (title === '') return;
             const todo = new Todo(title);
-            this.list.unshift(todo);
+            const li = this.createTodoItem(todo);
+            if (this.list.length > 0 && this.list[0].pinned) {
+                this.list.splice(1, 0, todo);
 
-            this.el.insertBefore(this.createTodoItem(todo), this.el.firstElementChild);
+                this.filter !== 'COMPLETED' && (this.el.childElementCount > 1 ?
+                    this.el.insertBefore(li, (this.el.firstElementChild as HTMLElement).nextElementSibling) :
+                    this.el.appendChild(li));
+            } else {
+                this.list.unshift(todo);
+                this.filter !== 'COMPLETED' && this.el.insertBefore(li, this.el.firstElementChild);
+            }
             this.newTodo.value = '';
         }
     }
