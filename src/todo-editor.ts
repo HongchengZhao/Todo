@@ -87,12 +87,14 @@ class TodoEditor {
                 break;
             } else if (el.classList && el.classList.contains('due-date-save')) {
                 const dueDate = this.el.querySelector('label[for=due-date-control]') as HTMLElement;
+                const control = document.getElementById('due-date-control') as HTMLInputElement;
                 const { year, month, day } = this.duedatePicker.selected;
                 const datetime = new Date(year, month - 1, day);
                 dueDate.innerText = `Due on ${datetime.toDateString()}`;
 
                 const todo = this.list.find(todo => todo.id === this.curTodoId);
                 if (todo) todo.dueDate = datetime;
+                control.checked = false;
                 break;
             } else if (el.classList && el.classList.contains('due-date-cancel')) {
                 const duedateControl = document.getElementById('due-date-control') as HTMLInputElement;
@@ -100,6 +102,7 @@ class TodoEditor {
                 break;
             } else if (el.classList && el.classList.contains('reminder-save')) {
                 const reminderTime = this.el.querySelector('label[for=alarm-control]') as HTMLElement;
+                const control = document.getElementById('alarm-control') as HTMLInputElement;
                 const { year, month, day } = this.alarmDatePicker.selected;
                 if (year === 0) break;
 
@@ -112,6 +115,7 @@ class TodoEditor {
 
                 const todo = this.list.find(todo => todo.id === this.curTodoId);
                 if (todo) todo.reminderTime = datetime;
+                control.checked = false;
                 break;
             } else if (el.classList && el.classList.contains('reminder-cancel')) {
                 const alarmControl = document.getElementById('alarm-control') as HTMLInputElement;
